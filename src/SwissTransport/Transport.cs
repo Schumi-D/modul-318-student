@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using Newtonsoft.Json;
 
@@ -42,6 +43,23 @@ namespace SwissTransport
         public Connections GetConnections(string fromStation, string toStattion)
         {
             var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStattion);
+            var response = request.GetResponse();
+            var responseStream = response.GetResponseStream();
+
+            if (responseStream != null)
+            {
+                var readToEnd = new StreamReader(responseStream).ReadToEnd();
+                var connections =
+                    JsonConvert.DeserializeObject<Connections>(readToEnd);
+                return connections;
+            }
+
+            return null;
+        }
+
+        public Connections GetConnectionsByTime(string fromStation, string toStattion, DateTime Zeit)
+        {
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStattion + "&time=" + Zeit.ToString("HH:mm") + "&date=" + Zeit.ToString("yyyy-MM-dd"));
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
 
