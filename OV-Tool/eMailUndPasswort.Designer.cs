@@ -47,9 +47,9 @@
             this.lblSender.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblSender.Location = new System.Drawing.Point(10, 13);
             this.lblSender.Name = "lblSender";
-            this.lblSender.Size = new System.Drawing.Size(97, 13);
+            this.lblSender.Size = new System.Drawing.Size(101, 13);
             this.lblSender.TabIndex = 0;
-            this.lblSender.Text = "Ihre eMail-Adresse:";
+            this.lblSender.Text = "Ihre eMail-Adresse:*";
             // 
             // tbSender
             // 
@@ -71,9 +71,9 @@
             this.lblEmpfänger.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblEmpfänger.Location = new System.Drawing.Point(10, 101);
             this.lblEmpfänger.Name = "lblEmpfänger";
-            this.lblEmpfänger.Size = new System.Drawing.Size(130, 13);
+            this.lblEmpfänger.Size = new System.Drawing.Size(134, 13);
             this.lblEmpfänger.TabIndex = 2;
-            this.lblEmpfänger.Text = "eMail-Adresse Empfänger:";
+            this.lblEmpfänger.Text = "eMail-Adresse Empfänger:*";
             // 
             // tbPW
             // 
@@ -89,9 +89,9 @@
             this.lblPW.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblPW.Location = new System.Drawing.Point(10, 39);
             this.lblPW.Name = "lblPW";
-            this.lblPW.Size = new System.Drawing.Size(68, 13);
+            this.lblPW.Size = new System.Drawing.Size(72, 13);
             this.lblPW.TabIndex = 4;
-            this.lblPW.Text = "Ihr Passwort:";
+            this.lblPW.Text = "Ihr Passwort:*";
             // 
             // btSenden
             // 
@@ -135,9 +135,9 @@
             this.lblSubjekt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblSubjekt.Location = new System.Drawing.Point(10, 127);
             this.lblSubjekt.Name = "lblSubjekt";
-            this.lblSubjekt.Size = new System.Drawing.Size(41, 13);
+            this.lblSubjekt.Size = new System.Drawing.Size(45, 13);
             this.lblSubjekt.TabIndex = 9;
-            this.lblSubjekt.Text = "Betreff:";
+            this.lblSubjekt.Text = "Betreff:*";
             // 
             // eMailUndPasswort
             // 

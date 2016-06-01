@@ -20,40 +20,80 @@ namespace OV_Tool
             m_LVResultate = LVResultate;
         }
 
+        //eMail senden
+        //*********************************************************************
         private void btSenden_Click(object sender, EventArgs e)
-        { 
-            MailAddress fromAddress = new MailAddress(tbSender.Text, "Transport Swiss");
-            MailAddress toAddress = new MailAddress(tbEmpfänger.Text);
-            string fromPassword = tbPW.Text;
-            string subject = tbBetreff.Text;
-            string body = rtbInhalt.Text;
-
-            foreach (ListViewItem item in m_LVResultate.Items)
+        {
+            if (tbSender.Text != "" && tbPW.Text != "" && tbEmpfänger.Text != "" && tbBetreff.Text != "")
             {
-                body += Environment.NewLine;
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
+                Cursor.Current = Cursors.WaitCursor;
+                btSenden.Enabled = false;
+                try
                 {
-                    body += subitem.Text + "  |  ";
+                    //Daten für neue Mail sammeln
+                    MailAddress fromAddress = new MailAddress(tbSender.Text, "Transport Swiss");
+                    MailAddress toAddress = new MailAddress(tbEmpfänger.Text);
+                    string fromPassword = tbPW.Text;
+                    string subject = tbBetreff.Text;
+                    string body = rtbInhalt.Text;
+
+                    //ListView in body einfüllen
+                    foreach (ListViewItem item in m_LVResultate.Items)
+                    {
+                        body += Environment.NewLine;
+                        foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
+                        {
+                            body += subitem.Text + "  |  ";
+                        }
+                    }
+
+                    //Neuen smtp Client setzen, über den das Mail dann gesendet wird
+                    var smtp = new SmtpClient
+                    {
+                        Host = "smtp.live.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new System.Net.NetworkCredential(fromAddress.Address, fromPassword)
+                    };
+
+                    //Neues Mail erstellen und abschicken
+                    using (var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body
+                    })
+                    {
+                        smtp.Send(message);
+                    }
+                    Cursor.Current = Cursors.Default;
+                    btSenden.Enabled = false;
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    //Fehlermeldungen anzeigen
+                    Cursor.Current = Cursors.Default;
+                    btSenden.Enabled = false;
+                    DialogResult result = MessageBox.Show("Beim Versenden der eMail ist folgender Fehler aufgetreten: " + Environment.NewLine + ex.Message,
+                                                          "Fehler", 
+                                                          MessageBoxButtons.RetryCancel, 
+                                                          MessageBoxIcon.Error);
+                    if (result == DialogResult.Cancel)
+                    {
+                        this.Close();
+                    }
+
                 }
             }
-
-            var smtp = new SmtpClient
+            //Fehlermeldung bei leeren Feldern
+            else
             {
-                Host = "smtp.live.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new System.Net.NetworkCredential(fromAddress.Address, fromPassword)
-            };
-
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
+                MessageBox.Show("Es sind nicht alle erforderlichen Felder eingetragen. Bitte alle Felder mit einem Stern ausfüllen.",
+                                "Leere Felder", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
             }
         }
     }
